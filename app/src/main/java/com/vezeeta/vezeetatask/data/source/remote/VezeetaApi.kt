@@ -1,6 +1,5 @@
 package com.vezeeta.vezeetatask.data.source.remote
 
-import com.vezeeta.vezeetatask.domain.model.Offer
 import com.vezeeta.vezeetatask.domain.model.OfferDetail
 import com.vezeeta.vezeetatask.domain.model.Response
 import retrofit2.http.GET

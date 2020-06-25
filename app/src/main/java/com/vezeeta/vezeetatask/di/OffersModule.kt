@@ -1,10 +1,10 @@
 package com.vezeeta.vezeetatask.di
 
-import com.vezeeta.vezeetatask.domain.usecase.GetOffersUseCase
 import com.vezeeta.vezeetatask.data.repository.OffersRepositoryImp
 import com.vezeeta.vezeetatask.data.source.remote.VezeetaApi
 import com.vezeeta.vezeetatask.data.source.remote.exception.ApiErrorHandle
 import com.vezeeta.vezeetatask.domain.repository.OffersRepository
+import com.vezeeta.vezeetatask.domain.usecase.GetOffersUseCase
 import com.vezeeta.vezeetatask.presentation.offers.OffersViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module

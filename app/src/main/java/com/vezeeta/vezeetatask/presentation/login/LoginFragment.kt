@@ -21,14 +21,10 @@ class LoginFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.login_fragment, container, false)
         binding.buttonLogin.setOnClickListener {
-            Navigation.findNavController(binding.buttonLogin).navigate(R.id.action_loginFragment_to_offersListFragment);
+            Navigation.findNavController(binding.buttonLogin)
+                .navigate(R.id.action_loginFragment_to_offersListFragment)
         }
         return binding.root
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
     }
 
 }

@@ -1,7 +1,7 @@
 package com.vezeeta.vezeetatask.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.vezeeta.vezeetatask.R
 
 class MainActivity : AppCompatActivity() {
