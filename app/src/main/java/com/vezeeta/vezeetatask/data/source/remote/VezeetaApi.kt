@@ -2,6 +2,7 @@ package com.vezeeta.vezeetatask.data.source.remote
 
 import com.vezeeta.vezeetatask.domain.model.Offer
 import com.vezeeta.vezeetatask.domain.model.OfferDetail
+import com.vezeeta.vezeetatask.domain.model.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -11,8 +12,8 @@ import retrofit2.http.Query
 interface VezeetaApi {
     @GET("/dummyOffers")
     suspend fun getOffers(
-        @Query("page") page: Int
-    ): List<Offer>
+        @Query("page") page: Int = 1
+    ): Response
 
     @GET("/dummyOfferDetails")
     suspend fun getOfferDetails(
@@ -23,5 +24,5 @@ interface VezeetaApi {
     @GET("/dummyOffersSearch")
     suspend fun searchOffers(
         @Query("text") text: String
-    ): List<Offer>
+    ): Response
 }

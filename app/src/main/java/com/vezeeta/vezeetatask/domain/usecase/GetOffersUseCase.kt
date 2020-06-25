@@ -1,7 +1,7 @@
-package com.android.post.domain.usecase
+package com.vezeeta.vezeetatask.domain.usecase
 
-import com.android.post.domain.usecase.base.UseCase
-import com.vezeeta.vezeetatask.domain.exception.ApiErrorHandle
+import com.vezeeta.vezeetatask.domain.usecase.base.UseCase
+import com.vezeeta.vezeetatask.data.source.remote.exception.ApiErrorHandle
 import com.vezeeta.vezeetatask.domain.model.Offer
 import com.vezeeta.vezeetatask.domain.repository.OffersRepository
 
@@ -13,5 +13,5 @@ class GetOffersUseCase constructor(
         return offersRepository.getOffers(params?.page ?: 1)
     }
 
-    data class Params(val page: Int)
+    data class Params(val page: Int=1)
 }

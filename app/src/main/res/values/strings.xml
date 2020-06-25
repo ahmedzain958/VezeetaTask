@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">VezzetaTaskMainActivity</string>
+    <string name="app_name">Vezzeta</string>
+    <string name="search">Search for a specific Item</string>
+    <string name="login">Log in</string>
+    <string name="email">Email Address</string>
+    <string name="password">Password</string>
+    <string name="details">Details</string>
+    <string name="loading">Loading..</string>
+    <string name="no_internet_connection">No Internet Connection</string>
 </resources>

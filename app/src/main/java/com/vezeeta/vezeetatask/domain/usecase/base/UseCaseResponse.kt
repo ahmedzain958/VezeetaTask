@@ -1,4 +1,4 @@
-package com.android.post.domain.usecase.base
+package com.vezeeta.vezeetatask.domain.usecase.base
 
 import com.vezeeta.vezeetatask.domain.model.ErrorModel
 

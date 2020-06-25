@@ -10,7 +10,7 @@ class RemoteDataSourceImp(
     private val vezeetaApi: VezeetaApi
 ) : RemoteDataSource {
     override suspend fun getOffers(page: Int): List<Offer> {
-        return vezeetaApi.getOffers(page)
+        return vezeetaApi.getOffers(page).offersList
     }
 
     override suspend fun getOfferDetails(offerKey: String): OfferDetail {
@@ -18,6 +18,6 @@ class RemoteDataSourceImp(
     }
 
     override suspend fun searchOffers(searchText: String): List<Offer> {
-        return vezeetaApi.searchOffers(searchText)
+        return vezeetaApi.searchOffers(searchText).offersList
     }
 }

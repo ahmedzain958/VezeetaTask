@@ -1,5 +1,6 @@
-package com.vezeeta.vezeetatask.domain.exception
+package com.vezeeta.vezeetatask.data.source.remote.exception
 
+import com.vezeeta.vezeetatask.data.repository.ResourcesRepository
 import com.vezeeta.vezeetatask.domain.model.ErrorModel
 import okhttp3.ResponseBody
 import retrofit2.HttpException
@@ -11,7 +12,9 @@ import java.net.SocketTimeoutException
  * depending on what exception returns [ErrorModel]
  *
  * */
-class ApiErrorHandle {
+class ApiErrorHandle(
+    private val resourcesRepository: ResourcesRepository
+) {
 
     fun traceErrorException(throwable: Throwable?): ErrorModel {
         val errorModel: ErrorModel? = when (throwable) {
@@ -21,7 +24,11 @@ class ApiErrorHandle {
             is HttpException -> {
                 // handle UNAUTHORIZED situation (when token expired)
                 if (throwable.code() == 401) {
-                    ErrorModel(throwable.message(), throwable.code(), ErrorModel.ErrorStatus.UNAUTHORIZED)
+                    ErrorModel(
+                        throwable.message(),
+                        throwable.code(),
+                        ErrorModel.ErrorStatus.UNAUTHORIZED
+                    )
                 } else {
                     getHttpError(throwable.response()?.errorBody())
                 }
@@ -34,7 +41,16 @@ class ApiErrorHandle {
 
             // handle connection error
             is IOException -> {
-                ErrorModel(throwable.message, ErrorModel.ErrorStatus.NO_CONNECTION)
+                ErrorModel(
+                    resourcesRepository.getNetworkExceptionMessage(),
+                    ErrorModel.ErrorStatus.NO_CONNECTION
+                )
+            }
+            is NoConnectivityException -> {
+                ErrorModel(
+                    resourcesRepository.getNetworkExceptionMessage(),
+                    ErrorModel.ErrorStatus.NO_CONNECTION
+                )
             }
             else -> null
         }

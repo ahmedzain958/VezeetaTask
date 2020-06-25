@@ -1,7 +1,7 @@
-package com.android.post.domain.usecase.base
+package com.vezeeta.vezeetatask.domain.usecase.base
 
 import android.util.Log
-import com.vezeeta.vezeetatask.domain.exception.ApiErrorHandle
+import com.vezeeta.vezeetatask.data.source.remote.exception.ApiErrorHandle
 import kotlinx.coroutines.*
 import java.util.concurrent.CancellationException
 
