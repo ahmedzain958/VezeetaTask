@@ -13,7 +13,6 @@ object ListOffersBindings {
     @JvmStatic
     @BindingAdapter("bind:mainImage")
     fun loadImage(view: ImageView, imageUrl: String?) {
-        Log.d("loadImage", imageUrl)
         Picasso.get().load(imageUrl).error(R.drawable.ic_loading).into(view)
     }
 }

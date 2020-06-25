@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.vezeeta.vezeetatask.R
 import com.vezeeta.vezeetatask.databinding.HolderOfferBinding
@@ -40,8 +41,20 @@ class OffersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun onBind(offer: Offer) {
             val holderOfferBinding = viewDataBinding as HolderOfferBinding
             holderOfferBinding.offer = offer
-            holderOfferBinding.textviewLoading.visibility = View.GONE
         }
+    }
+
+    class DiffUtilCallBack : DiffUtil.ItemCallback<Offer>() {
+        override fun areItemsTheSame(oldItem: Offer, newItem: Offer): Boolean {
+            return oldItem.offerKey == newItem.offerKey
+        }
+
+        override fun areContentsTheSame(oldItem: Offer, newItem: Offer): Boolean {
+            return oldItem.offerKey == newItem.offerKey
+                    && oldItem.mainImage == newItem.mainImage
+                    && oldItem.offerName == newItem.offerName
+        }
+
     }
 
 }
