@@ -12,8 +12,11 @@ class LoginRepositoryImp(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource
 ) : LoginRepository {
+
     override suspend fun login(email: String, password: String): User {
-        return remoteDataSource.login(email, password)
+        val user = remoteDataSource.login(email, password)
+        localDataSource.cacheUser(user)
+        return user
     }
 
 }

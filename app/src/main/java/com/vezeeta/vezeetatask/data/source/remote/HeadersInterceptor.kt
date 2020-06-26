@@ -15,14 +15,7 @@ class HeadersInterceptor :
 
     private fun setupRequestHeaders(oldRequest: Request): Request {
         return oldRequest.newBuilder()
-            .addHeader("Access-Control-Allow-Origin", "*")
-            .addHeader("Content-Encoding", "gzip")
             .addHeader("Content-Type", "application/json; charset=UTF-8")
-            .addHeader("Server", "nginx")
-            .addHeader("Vary", "Accept-Encoding")
-            .addHeader("X-RateLimit-Limit", "120")
-            .addHeader("X-RateLimit-Remaining", "116")
-            .addHeader("X-RateLimit-Reset", "1593150731")
             .build()
     }
 

@@ -10,10 +10,16 @@ import com.vezeeta.vezeetatask.domain.usecase.login.LoginUseCase
 import com.vezeeta.vezeetatask.presentation.base.BaseViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-class LoginViewModel constructor(private val loginUseCase: LoginUseCase) : BaseViewModel() {
+class LoginViewModel constructor(
+    private val loginUseCase: LoginUseCase
+) : BaseViewModel() {
     var emailAddress = MutableLiveData<String>()
     var password = MutableLiveData<String>()
     private var userMutableLiveData: MutableLiveData<LoginUser>? = null
+
+    val logged: LiveData<Boolean>
+        get() = _logged
+    private val _logged by lazy { MutableLiveData<Boolean>() }
 
     val showProgressbar: LiveData<Boolean>
         get() = _showProgressbar
@@ -32,6 +38,7 @@ class LoginViewModel constructor(private val loginUseCase: LoginUseCase) : BaseV
 
     init {
         _showProgressbar.value = false
+        _logged.value = false
     }
 
     fun onClick(view: View) {
@@ -50,6 +57,7 @@ class LoginViewModel constructor(private val loginUseCase: LoginUseCase) : BaseV
             object : UseCaseResponse<User> {
                 override fun onSuccess(result: User) {
                     _showProgressbar.value = false
+                    _logged.value = true
                 }
 
                 override fun onError(errorModel: ErrorModel?) {

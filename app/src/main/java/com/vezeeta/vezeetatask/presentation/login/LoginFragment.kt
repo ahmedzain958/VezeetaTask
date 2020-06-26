@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
 import com.vezeeta.vezeetatask.R
 import com.vezeeta.vezeetatask.databinding.LoginFragmentBinding
@@ -81,7 +82,11 @@ class LoginFragment : BaseFragment<LoginFragmentBinding>() {
                 Snackbar.LENGTH_LONG
             ).show()
         })
-        /*Navigation.findNavController(binding.buttonLogin)
-                .navigate(R.id.action_loginFragment_to_offersListFragment)*/
+        viewModel.logged.observe(viewLifecycleOwner, Observer { isLogged ->
+            if (isLogged) {
+                Navigation.findNavController(binding.buttonLogin)
+                    .navigate(R.id.action_loginFragment_to_offersListFragment)
+            }
+        })
     }
 }

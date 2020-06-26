@@ -11,9 +11,10 @@ import retrofit2.http.Query
  * Created by Ahmed Zain on 6/24/2020.
  */
 interface VezeetaApi {
+
     @POST("/dummyLogin")
     suspend fun login(
-        @Query("email") email: String ,
+        @Query(encoded = true/*avoids converting @ to %40 */, value = "email") email: String,
         @Query("password") password: String
     ): User
 
