@@ -11,9 +11,15 @@ import com.vezeeta.vezeetatask.databinding.HolderOfferBinding
 import com.vezeeta.vezeetatask.domain.model.Offer
 import kotlin.properties.Delegates
 
-class OffersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class OffersAdapter(
+    var onOfferClickListener: OnOfferClickListener
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var mOffersList: List<Offer> by Delegates.observable(emptyList()) { _, _, _ ->
         notifyDataSetChanged()
+    }
+
+    interface OnOfferClickListener {
+        fun onOfferClicked(offer: Offer)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -39,9 +45,13 @@ class OffersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         RecyclerView.ViewHolder(viewDataBinding.root) {
         fun onBind(offer: Offer) {
             val holderOfferBinding = viewDataBinding as HolderOfferBinding
+            holderOfferBinding.buttonDetails.setOnClickListener {
+                onOfferClickListener.onOfferClicked(offer)
+            }
             holderOfferBinding.offer = offer
         }
     }
+
 
     class DiffUtilCallBack : DiffUtil.ItemCallback<Offer>() {
         override fun areItemsTheSame(oldItem: Offer, newItem: Offer): Boolean {

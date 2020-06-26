@@ -11,11 +11,13 @@ import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
 import com.vezeeta.vezeetatask.R
 import com.vezeeta.vezeetatask.databinding.OffersListFragmentBinding
+import com.vezeeta.vezeetatask.domain.model.Offer
 import com.vezeeta.vezeetatask.presentation.base.BaseFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class OffersListFragment : BaseFragment<OffersListFragmentBinding>() {
+class OffersListFragment : BaseFragment<OffersListFragmentBinding>(),
+    OffersAdapter.OnOfferClickListener {
     private val viewModel by viewModel<OffersViewModel>()
     private lateinit var binding: OffersListFragmentBinding
     private lateinit var offersAdapter: OffersAdapter
@@ -31,7 +33,7 @@ class OffersListFragment : BaseFragment<OffersListFragmentBinding>() {
         setHasOptionsMenu(true)
         binding = getViewDataBinding()
         binding.progressbar.show()
-        offersAdapter = OffersAdapter()
+        offersAdapter = OffersAdapter(this)
         binding.recyclerviewOffers.adapter = offersAdapter
         viewModel.getOffers()
         binding.swipeRefreshLayout.setOnRefreshListener {
@@ -48,6 +50,8 @@ class OffersListFragment : BaseFragment<OffersListFragmentBinding>() {
             if (isVisible) binding.progressbar.show() else binding.progressbar.hide()
         })
         viewModel.messageData.observe(viewLifecycleOwner, Observer { message ->
+            //no internet swipe refresh is displayed; this line hides it
+            binding.swipeRefreshLayout.isRefreshing = false
             Snackbar.make(
                 view,
                 message,
@@ -74,5 +78,11 @@ class OffersListFragment : BaseFragment<OffersListFragmentBinding>() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onOfferClicked(offer: Offer) {
+        val action =
+            OffersListFragmentDirections.actionOffersListFragmentToOfferDetailsFragment(offer)
+        Navigation.findNavController(binding.root).navigate(action)
     }
 }

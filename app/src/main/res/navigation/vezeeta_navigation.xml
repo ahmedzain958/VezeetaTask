@@ -29,5 +29,19 @@
             app:popExitAnim="@anim/slide_out_left"
             app:popUpTo="@id/offersListFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_offersListFragment_to_offerDetailsFragment"
+            app:destination="@id/offerDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/offerDetailsFragment"
+        android:name="com.vezeeta.vezeetatask.presentation.offers.details.OfferDetailsFragment"
+        android:label="OfferDetailsFragment">
+
+        <argument
+            android:name="Offer"
+            app:argType="com.vezeeta.vezeetatask.domain.model.Offer" />
     </fragment>
 </navigation>
