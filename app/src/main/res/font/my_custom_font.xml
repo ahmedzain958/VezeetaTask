@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <font-family xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- regular -->
     <font
-            android:font="@font/cairoregular"
-            android:fontStyle="normal"
-            app:font="@font/cairoregular"
-            app:fontStyle="normal"/>
+        android:font="@font/cairoregular"
+        android:fontStyle="normal"
+        app:font="@font/cairoregular"
+        app:fontStyle="normal" />
 
     <!-- italic -->
     <font
-            android:font="@font/cairoitalic"
-            android:fontStyle="italic"
-            app:font="@font/cairoitalic"
-            app:fontStyle="italic"/>
+        android:font="@font/cairoitalic"
+        android:fontStyle="italic"
+        app:font="@font/cairoitalic"
+        app:fontStyle="italic" />
 
     <!-- bold -->
     <font
-            android:font="@font/cairoregular"
-            android:fontStyle="normal"
-            app:font="@font/cairoregular"
-            app:fontStyle="normal" />
+        android:font="@font/cairoregular"
+        android:fontStyle="normal"
+        app:font="@font/cairoregular"
+        app:fontStyle="normal" />
 </font-family>

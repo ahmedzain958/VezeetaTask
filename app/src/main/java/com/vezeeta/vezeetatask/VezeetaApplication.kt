@@ -18,7 +18,15 @@ class VezeetaApplication : Application() {
             if (BuildConfig.DEBUG)
                 androidLogger()
             androidContext(this@VezeetaApplication)
-            modules(listOf(networkModule, appModule, offersModule, authenticationModule, localModule))
+            modules(
+                listOf(
+                    networkModule,
+                    appModule,
+                    offersModule,
+                    authenticationModule,
+                    localModule
+                )
+            )
         }
     }
 }

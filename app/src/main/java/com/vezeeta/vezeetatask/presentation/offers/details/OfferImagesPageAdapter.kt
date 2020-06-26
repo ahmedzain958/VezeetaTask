@@ -16,6 +16,7 @@ class OfferImagesPageAdapter(
         fun onImageLoadedSuccessfully()
         fun onImageErrorLoading()
     }
+
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
         return view == `object`
     }
