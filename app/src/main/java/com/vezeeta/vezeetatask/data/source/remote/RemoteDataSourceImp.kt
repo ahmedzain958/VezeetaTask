@@ -2,6 +2,7 @@ package com.vezeeta.vezeetatask.data.source.remote
 
 import com.vezeeta.vezeetatask.domain.model.Offer
 import com.vezeeta.vezeetatask.domain.model.OfferDetail
+import com.vezeeta.vezeetatask.domain.model.User
 
 /**
  * Created by Ahmed Zain on 6/24/2020.
@@ -9,6 +10,13 @@ import com.vezeeta.vezeetatask.domain.model.OfferDetail
 class RemoteDataSourceImp(
     private val vezeetaApi: VezeetaApi
 ) : RemoteDataSource {
+    override suspend fun login(
+        email: String,
+        password: String
+    ): User {
+        return vezeetaApi.login(email, password)
+    }
+
     override suspend fun getOffers(page: Int): List<Offer> {
         return vezeetaApi.getOffers(page).offersList
     }

@@ -14,16 +14,11 @@ import retrofit2.Retrofit
  * Created by Ahmed Zain on 6/24/2020.
  */
 val offersModule = module {
-    single { createOffersService(get()) }
     factory<OffersRepository> { OffersRepositoryImp(get(), get()) }
-    factory { ApiErrorHandle(get()) }
     factory { createGetOffersUseCase(get(), get()) }
     viewModel { OffersViewModel(get()) }
 }
 
-fun createOffersService(retrofit: Retrofit): VezeetaApi {
-    return retrofit.create(VezeetaApi::class.java)
-}
 
 fun createGetOffersUseCase(
     offersRepository: OffersRepository,

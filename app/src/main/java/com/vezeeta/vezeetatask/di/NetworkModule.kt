@@ -3,6 +3,9 @@ package com.vezeeta.vezeetatask.di
 import com.vezeeta.vezeetatask.BuildConfig
 import com.vezeeta.vezeetatask.data.source.remote.ConnectivityInterceptor
 import com.vezeeta.vezeetatask.data.source.remote.ConnectivityInterceptorImpl
+import com.vezeeta.vezeetatask.data.source.remote.HeadersInterceptor
+import com.vezeeta.vezeetatask.data.source.remote.VezeetaApi
+import com.vezeeta.vezeetatask.data.source.remote.exception.ApiErrorHandle
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
@@ -15,9 +18,14 @@ import java.util.concurrent.TimeUnit
  */
 
 val networkModule = module {
+    single { HeadersInterceptor() }
     single<ConnectivityInterceptor> { ConnectivityInterceptorImpl(get()) }
-    single { createOkHttpClient(get()) }
+    single { createOkHttpClient(get(), get()) }
     single { createRetrofit(get(), BuildConfig.BASE_URL) }
+    single {
+        createOffersService(get())
+    }
+    single { ApiErrorHandle(get()) }
 }
 
 fun createRetrofit(okHttpClient: OkHttpClient, url: String): Retrofit {
@@ -27,13 +35,21 @@ fun createRetrofit(okHttpClient: OkHttpClient, url: String): Retrofit {
         .addConverterFactory(GsonConverterFactory.create()).build()
 }
 
-fun createOkHttpClient(connectivityInterceptor: ConnectivityInterceptor): OkHttpClient {
+fun createOkHttpClient(
+    connectivityInterceptor: ConnectivityInterceptor,
+    headersInterceptor: HeadersInterceptor
+): OkHttpClient {
     val httpLoggingInterceptor = HttpLoggingInterceptor()
     httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
     return OkHttpClient.Builder()
+        .addInterceptor(headersInterceptor)
         .connectTimeout(60L, TimeUnit.SECONDS)
         .readTimeout(60L, TimeUnit.SECONDS)
         .addInterceptor(httpLoggingInterceptor)
         .addInterceptor(connectivityInterceptor)
         .build()
+}
+
+fun createOffersService(retrofit: Retrofit): VezeetaApi {
+    return retrofit.create(VezeetaApi::class.java)
 }

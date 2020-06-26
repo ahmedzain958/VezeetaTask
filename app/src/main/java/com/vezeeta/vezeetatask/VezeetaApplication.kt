@@ -2,6 +2,7 @@ package com.vezeeta.vezeetatask
 
 import android.app.Application
 import com.vezeeta.vezeetatask.di.appModule
+import com.vezeeta.vezeetatask.di.loginModule
 import com.vezeeta.vezeetatask.di.networkModule
 import com.vezeeta.vezeetatask.di.offersModule
 import org.koin.android.ext.koin.androidContext
@@ -18,7 +19,7 @@ class VezeetaApplication : Application() {
             if (BuildConfig.DEBUG)
                 androidLogger()
             androidContext(this@VezeetaApplication)
-            modules(listOf(networkModule, appModule, offersModule))
+            modules(listOf(networkModule, appModule, offersModule, loginModule))
         }
     }
 }

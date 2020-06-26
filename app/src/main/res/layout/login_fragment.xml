@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="model"
+            type="com.vezeeta.vezeetatask.presentation.login.LoginViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,12 +16,12 @@
         android:layout_height="match_parent"
         android:background="@color/colorPrimary"
         tools:context="com.vezeeta.vezeetatask.presentation.login.LoginFragment">
-
+        <!--low layout_marginTop to display keyboard -->
         <ImageView
             android:id="@+id/imageview_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_60dp"
+            android:layout_marginTop="@dimen/margin_32dp"
             android:background="@drawable/ic_vezeeta_logo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,12 +50,13 @@
                     android:id="@+id/edittext_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@null"
                     android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginEnd="@dimen/margin_16dp"
-                    android:hint="@string/email"
-                    android:textColorHint="@color/colorHint"
                     android:layout_marginBottom="@dimen/margin_16dp"
+                    android:background="@null"
+                    android:hint="@string/email"
+                    android:text="@={model.emailAddress}"
+                    android:textColorHint="@color/colorHint"
                     app:layout_constraintBottom_toTopOf="@id/edittext_password"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -60,14 +65,14 @@
                 <View
                     android:layout_width="0dp"
                     android:layout_height="@dimen/line_height"
-                    android:background="@color/colorSeparator"
-                    android:layout_marginTop="@dimen/margin_16dp"
-                    android:layout_marginBottom="@dimen/margin_16dp"
-                    app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="@dimen/margin_4dp"
+                    android:layout_marginTop="@dimen/margin_16dp"
                     android:layout_marginEnd="@dimen/margin_4dp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginBottom="@dimen/margin_16dp"
+                    android:background="@color/colorSeparator"
                     app:layout_constraintBottom_toTopOf="@id/edittext_password"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edittext_email" />
 
                 <EditText
@@ -75,12 +80,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_16dp"
                     android:layout_marginEnd="@dimen/margin_16dp"
-                    android:textColorHint="@color/colorHint"
                     android:background="@null"
                     android:hint="@string/password"
+                    android:text="@={model.password}"
+                    android:textColorHint="@color/colorHint"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginTop="@dimen/margin_16dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/edittext_email" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -92,6 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_16dp"
             android:background="@drawable/button_rounded"
+            android:onClick="@{(v) -> model.onClick(v)}"
             android:text="@string/login"
             android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -99,6 +106,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cardview" />
 
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/progressbar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

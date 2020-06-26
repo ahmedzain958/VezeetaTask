@@ -3,8 +3,8 @@ package com.vezeeta.vezeetatask.presentation.offers
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import com.vezeeta.vezeetatask.R
 import com.vezeeta.vezeetatask.databinding.OffersListFragmentBinding
 import com.vezeeta.vezeetatask.presentation.base.BaseFragment
@@ -33,7 +33,7 @@ class OffersListFragment : BaseFragment<OffersListFragmentBinding>() {
             viewModel.getOffers()
         }
         viewModel.offers.observe(viewLifecycleOwner, Observer { offerList ->
-            offerList?.let {
+            offerList.let {
                 offersAdapter.mOffersList = it
                 binding.swipeRefreshLayout.isRefreshing = false
                 Log.d(TAG, "offers count= ${it.size}")
@@ -43,7 +43,11 @@ class OffersListFragment : BaseFragment<OffersListFragmentBinding>() {
             if (isVisible) binding.progressbar.show() else binding.progressbar.hide()
         })
         viewModel.messageData.observe(viewLifecycleOwner, Observer { message ->
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            Snackbar.make(
+                view,
+                message,
+                Snackbar.LENGTH_LONG
+            ).show()
         })
     }
 }
