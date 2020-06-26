@@ -13,4 +13,7 @@
     <string name="no_email_message">Please Enter Email</string>
     <string name="no_password_message">Please Enter Password</string>
     <string name="logout">Log out</string>
+    <string name="no_image">Image not available</string>
+    <string name="_0_0">0/0</string>
+    <string name="offer_info">Offer Info</string>
 </resources>

@@ -14,4 +14,7 @@
     <string name="no_email_message">يرجي ادخال ايميل</string>
     <string name="no_password_message">يرجي ادخال كلمة مرور</string>
     <string name="logout">تسجيل خروج</string>
+    <string name="no_image">الصورة غير متوفرة</string>
+    <string name="_0_0">0/0</string>
+    <string name="offer_info">تفاصيل العرض</string>
 </resources>

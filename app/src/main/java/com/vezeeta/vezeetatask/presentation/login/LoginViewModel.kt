@@ -5,9 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vezeeta.vezeetatask.domain.model.ErrorModel
 import com.vezeeta.vezeetatask.domain.model.User
-import com.vezeeta.vezeetatask.domain.usecase.base.UseCaseResponse
 import com.vezeeta.vezeetatask.domain.usecase.authentication.CheckIsLoggedUserUseCase
 import com.vezeeta.vezeetatask.domain.usecase.authentication.LoginUseCase
+import com.vezeeta.vezeetatask.domain.usecase.base.UseCaseResponse
 import com.vezeeta.vezeetatask.presentation.base.BaseViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -60,6 +60,7 @@ class LoginViewModel constructor(
     }
 
     fun onClick(view: View) {
+        _showProgressbar.value = true
         val loginUser = LoginUser(
             emailAddress.value ?: "", password.value ?: ""
         )

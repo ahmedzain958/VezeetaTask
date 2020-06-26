@@ -32,38 +32,42 @@ class OffersListFragment : BaseFragment<OffersListFragmentBinding>(),
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
         binding = getViewDataBinding()
-        binding.progressbar.show()
-        offersAdapter = OffersAdapter(this)
-        binding.recyclerviewOffers.adapter = offersAdapter
         viewModel.getOffers()
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.getOffers()
+        binding.apply {
+            progressbar.show()
+            offersAdapter = OffersAdapter(this@OffersListFragment)
+            recyclerviewOffers.adapter = offersAdapter
+            swipeRefreshLayout.setOnRefreshListener {
+                viewModel.getOffers()
+            }
         }
-        viewModel.offers.observe(viewLifecycleOwner, Observer { offerList ->
-            offerList.let {
-                offersAdapter.mOffersList = it
+        viewModel.apply {
+            offers.observe(viewLifecycleOwner, Observer { offerList ->
+                offerList.let {
+                    offersAdapter.mOffersList = it
+                    binding.swipeRefreshLayout.isRefreshing = false
+                    Log.d(TAG, "offers count= ${it.size}")
+                }
+            })
+            showProgressbar.observe(viewLifecycleOwner, Observer { isVisible ->
+                if (isVisible) binding.progressbar.show() else binding.progressbar.hide()
+            })
+            messageData.observe(viewLifecycleOwner, Observer { message ->
+                //no internet swipe refresh is displayed; this line hides it
                 binding.swipeRefreshLayout.isRefreshing = false
-                Log.d(TAG, "offers count= ${it.size}")
-            }
-        })
-        viewModel.showProgressbar.observe(viewLifecycleOwner, Observer { isVisible ->
-            if (isVisible) binding.progressbar.show() else binding.progressbar.hide()
-        })
-        viewModel.messageData.observe(viewLifecycleOwner, Observer { message ->
-            //no internet swipe refresh is displayed; this line hides it
-            binding.swipeRefreshLayout.isRefreshing = false
-            Snackbar.make(
-                view,
-                message,
-                Snackbar.LENGTH_LONG
-            ).show()
-        })
-        viewModel.signedOut.observe(viewLifecycleOwner, Observer { signedOut ->
-            if (signedOut) {
-                Navigation.findNavController(binding.root)
-                    .navigate(R.id.action_offersListFragment_to_loginFragment)
-            }
-        })
+                Snackbar.make(
+                    view,
+                    message,
+                    Snackbar.LENGTH_LONG
+                ).show()
+            })
+            signedOut.observe(viewLifecycleOwner, Observer { signedOut ->
+                if (signedOut) {
+                    Navigation.findNavController(binding.root)
+                        .navigate(R.id.action_offersListFragment_to_loginFragment)
+                }
+            })
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
