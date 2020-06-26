@@ -42,10 +42,6 @@ class LoginFragment : BaseFragment<LoginFragmentBinding>() {
         super.onViewCreated(view, savedInstanceState)
         binding = getViewDataBinding()
         binding.model = viewModel
-        //todo remove
-        viewModel.emailAddress.value = "test.test@vezeeta.com"
-        viewModel.password.value = "123456"
-        //
         viewModel.getUser()?.observe(viewLifecycleOwner,
             Observer<LoginUser> { loginUser ->
                 if (TextUtils.isEmpty(loginUser.strEmailAddress)) {
