@@ -6,20 +6,27 @@ import androidx.lifecycle.MutableLiveData
 import com.vezeeta.vezeetatask.domain.model.ErrorModel
 import com.vezeeta.vezeetatask.domain.model.User
 import com.vezeeta.vezeetatask.domain.usecase.base.UseCaseResponse
-import com.vezeeta.vezeetatask.domain.usecase.login.LoginUseCase
+import com.vezeeta.vezeetatask.domain.usecase.authentication.CheckIsLoggedUserUseCase
+import com.vezeeta.vezeetatask.domain.usecase.authentication.LoginUseCase
 import com.vezeeta.vezeetatask.presentation.base.BaseViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class LoginViewModel constructor(
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val checkIsLoggedUserUseCase: CheckIsLoggedUserUseCase
 ) : BaseViewModel() {
     var emailAddress = MutableLiveData<String>()
     var password = MutableLiveData<String>()
     private var userMutableLiveData: MutableLiveData<LoginUser>? = null
 
-    val logged: LiveData<Boolean>
-        get() = _logged
-    private val _logged by lazy { MutableLiveData<Boolean>() }
+    val isExistingUser: LiveData<Boolean>
+        get() = _isExistingUser
+    private val _isExistingUser by lazy { MutableLiveData<Boolean>() }
+
+    val loggedSuccessfully: LiveData<Boolean>
+        get() = _loggedSuccessfully
+    private val _loggedSuccessfully by lazy { MutableLiveData<Boolean>() }
 
     val showProgressbar: LiveData<Boolean>
         get() = _showProgressbar
@@ -38,7 +45,18 @@ class LoginViewModel constructor(
 
     init {
         _showProgressbar.value = false
-        _logged.value = false
+        _loggedSuccessfully.value = false
+        checkIsLoggedUserUseCase.invoke(
+            null,
+            object : UseCaseResponse<Boolean> {
+                override fun onSuccess(result: Boolean) {
+                    _isExistingUser.value = result
+                }
+
+                override fun onError(errorModel: ErrorModel?) {
+                    _isExistingUser.value = false
+                }
+            })
     }
 
     fun onClick(view: View) {
@@ -57,7 +75,7 @@ class LoginViewModel constructor(
             object : UseCaseResponse<User> {
                 override fun onSuccess(result: User) {
                     _showProgressbar.value = false
-                    _logged.value = true
+                    _loggedSuccessfully.value = true
                 }
 
                 override fun onError(errorModel: ErrorModel?) {

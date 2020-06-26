@@ -13,4 +13,5 @@
     <string name="not_valid_password_message">يرجي ادخال كلمة مرور صالحة</string>
     <string name="no_email_message">يرجي ادخال ايميل</string>
     <string name="no_password_message">يرجي ادخال كلمة مرور</string>
+    <string name="logout">تسجيل خروج</string>
 </resources>

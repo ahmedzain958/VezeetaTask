@@ -9,13 +9,25 @@
         android:id="@+id/loginFragment"
         android:name="com.vezeeta.vezeetatask.presentation.login.LoginFragment"
         android:label="login_fragment"
-        tools:layout="@layout/login_fragment" >
+        tools:layout="@layout/login_fragment">
         <action
             android:id="@+id/action_loginFragment_to_offersListFragment"
-            app:destination="@id/offersListFragment" />
+            app:destination="@id/offersListFragment"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/offersListFragment"
         android:name="com.vezeeta.vezeetatask.presentation.offers.OffersListFragment"
-        android:label="OffersListFragment" />
+        android:label="OffersListFragment">
+        <action
+            android:id="@+id/action_offersListFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_left"
+            app:popUpTo="@id/offersListFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

@@ -2,13 +2,16 @@ package com.vezeeta.vezeetatask.presentation.login
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
 import com.vezeeta.vezeetatask.R
 import com.vezeeta.vezeetatask.databinding.LoginFragmentBinding
 import com.vezeeta.vezeetatask.presentation.base.BaseFragment
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginFragment : BaseFragment<LoginFragmentBinding>() {
@@ -18,6 +21,23 @@ class LoginFragment : BaseFragment<LoginFragmentBinding>() {
         return R.layout.login_fragment
     }
 
+
+    @ExperimentalCoroutinesApi
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        viewModel.isExistingUser.observe(viewLifecycleOwner, Observer { isExist ->
+            if (isExist) {
+                Navigation.findNavController(binding.root)
+                    .navigate(R.id.action_loginFragment_to_offersListFragment)
+            }
+        })
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+    @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = getViewDataBinding()
@@ -82,11 +102,14 @@ class LoginFragment : BaseFragment<LoginFragmentBinding>() {
                 Snackbar.LENGTH_LONG
             ).show()
         })
-        viewModel.logged.observe(viewLifecycleOwner, Observer { isLogged ->
+        viewModel.loggedSuccessfully.observe(viewLifecycleOwner, Observer { isLogged ->
             if (isLogged) {
                 Navigation.findNavController(binding.buttonLogin)
                     .navigate(R.id.action_loginFragment_to_offersListFragment)
             }
         })
+
     }
+
+
 }

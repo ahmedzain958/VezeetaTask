@@ -1,4 +1,4 @@
-package com.vezeeta.vezeetatask.domain.usecase
+package com.vezeeta.vezeetatask.domain.usecase.offers
 
 import com.vezeeta.vezeetatask.data.source.remote.exception.ApiErrorHandle
 import com.vezeeta.vezeetatask.domain.model.Offer

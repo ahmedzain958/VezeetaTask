@@ -12,4 +12,5 @@
     <string name="not_valid_password_message">Enter at least 6 Digit password</string>
     <string name="no_email_message">Please Enter Email</string>
     <string name="no_password_message">Please Enter Password</string>
+    <string name="logout">Log out</string>
 </resources>

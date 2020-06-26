@@ -36,12 +36,14 @@ class ApiErrorHandle(
 
             // handle api call timeout error
             is SocketTimeoutException -> {
-                ErrorModel(resourcesRepository.getSocketTimeoutExceptionMessage(), ErrorModel.ErrorStatus.TIMEOUT)
+                ErrorModel(
+                    resourcesRepository.getSocketTimeoutExceptionMessage(),
+                    ErrorModel.ErrorStatus.TIMEOUT
+                )
             }
 
             // handle connection error
-            is IOException ->
-            {
+            is IOException -> {
                 ErrorModel(
                     resourcesRepository.getNetworkExceptionMessage(),
                     ErrorModel.ErrorStatus.NO_CONNECTION
