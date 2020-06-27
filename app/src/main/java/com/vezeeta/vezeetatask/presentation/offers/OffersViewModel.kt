@@ -7,6 +7,7 @@ import com.vezeeta.vezeetatask.domain.model.Offer
 import com.vezeeta.vezeetatask.domain.usecase.authentication.SignOutUseCase
 import com.vezeeta.vezeetatask.domain.usecase.base.UseCaseResponse
 import com.vezeeta.vezeetatask.domain.usecase.offers.GetOffersUseCase
+import com.vezeeta.vezeetatask.domain.usecase.offers.SearchOffersUseCase
 import com.vezeeta.vezeetatask.presentation.base.BaseViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -15,7 +16,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
  */
 class OffersViewModel constructor(
     private val getOffersUseCase: GetOffersUseCase,
-    private val signOutUseCase: SignOutUseCase
+    private val signOutUseCase: SignOutUseCase,
+    private val searchOffersUseCase: SearchOffersUseCase
 ) :
     BaseViewModel() {
     val offers: LiveData<List<Offer>>
@@ -64,5 +66,24 @@ class OffersViewModel constructor(
                 _showProgressbar.value = false
             }
         })
+    }
+
+    @ExperimentalCoroutinesApi
+    fun search(searchText: String) {
+        _showProgressbar.value = true
+        searchOffersUseCase.invoke(
+            SearchOffersUseCase.Params(searchText)
+            , object : UseCaseResponse<List<Offer>> {
+                override fun onSuccess(result: List<Offer>) {
+                    _offers.value = result
+                    if (result.isNotEmpty())
+                        _showProgressbar.value = false
+                }
+
+                override fun onError(errorModel: ErrorModel?) {
+                    _messageData.value = errorModel?.message
+                    _showProgressbar.value = false
+                }
+            })
     }
 }

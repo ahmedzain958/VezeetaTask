@@ -9,8 +9,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
 
-abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
+abstract class BaseFragment<T : ViewDataBinding> : Fragment(), CoroutineScope {
 
     private lateinit var mViewDataBinding: T
     override fun onCreateView(

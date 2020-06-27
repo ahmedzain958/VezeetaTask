@@ -11,12 +11,18 @@ import com.google.android.material.snackbar.Snackbar
 import com.vezeeta.vezeetatask.R
 import com.vezeeta.vezeetatask.databinding.LoginFragmentBinding
 import com.vezeeta.vezeetatask.presentation.base.BaseFragment
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.coroutines.CoroutineContext
 
 class LoginFragment : BaseFragment<LoginFragmentBinding>() {
+    @ExperimentalCoroutinesApi
     private val viewModel by viewModel<LoginViewModel>()
     private lateinit var binding: LoginFragmentBinding
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
+
     override fun getLayoutId(): Int {
         return R.layout.login_fragment
     }
@@ -100,7 +106,7 @@ class LoginFragment : BaseFragment<LoginFragmentBinding>() {
         })
         viewModel.loggedSuccessfully.observe(viewLifecycleOwner, Observer { isLogged ->
             if (isLogged) {
-                Navigation.findNavController(binding.buttonLogin)
+                Navigation.findNavController(binding.root)
                     .navigate(R.id.action_loginFragment_to_offersListFragment)
             }
         })

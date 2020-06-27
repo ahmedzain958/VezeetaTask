@@ -13,8 +13,10 @@ import com.vezeeta.vezeetatask.databinding.OfferDetailsFragmentBinding
 import com.vezeeta.vezeetatask.domain.model.OfferDetail
 import com.vezeeta.vezeetatask.presentation.base.BaseFragment
 import kotlinx.android.synthetic.main.offer_details_fragment.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.coroutines.CoroutineContext
 
 class OfferDetailsFragment : BaseFragment<OfferDetailsFragmentBinding>(),
     OfferImagesPageAdapter.OfferListener {
@@ -22,6 +24,9 @@ class OfferDetailsFragment : BaseFragment<OfferDetailsFragmentBinding>(),
     private val viewModel by viewModel<OfferDetailsViewModel>()
     private lateinit var binding: OfferDetailsFragmentBinding
     private lateinit var offerImagesPageAdapter: OfferImagesPageAdapter
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
+
     override fun getLayoutId(): Int {
         return R.layout.offer_details_fragment
     }
@@ -130,7 +135,8 @@ class OfferDetailsFragment : BaseFragment<OfferDetailsFragmentBinding>(),
                 .setListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator?) {
                         super.onAnimationEnd(animation)
-                        imageview_hand.visibility = View.GONE
+                        if (imageview_hand != null)
+                            imageview_hand.visibility = View.GONE
                     }
                 }).duration = 1200
         }
@@ -144,4 +150,5 @@ class OfferDetailsFragment : BaseFragment<OfferDetailsFragmentBinding>(),
         super.onPause()
         stopRepeatingTask()
     }
+
 }

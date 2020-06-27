@@ -1,6 +1,8 @@
 package com.vezeeta.vezeetatask.presentation.offers
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
@@ -13,15 +15,46 @@ import com.vezeeta.vezeetatask.R
 import com.vezeeta.vezeetatask.databinding.OffersListFragmentBinding
 import com.vezeeta.vezeetatask.domain.model.Offer
 import com.vezeeta.vezeetatask.presentation.base.BaseFragment
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.coroutines.CoroutineContext
 
-class OffersListFragment : BaseFragment<OffersListFragmentBinding>(),
+class OffersListFragment :
+    BaseFragment<OffersListFragmentBinding>(),
     OffersAdapter.OnOfferClickListener {
     private val viewModel by viewModel<OffersViewModel>()
     private lateinit var binding: OffersListFragmentBinding
     private lateinit var offersAdapter: OffersAdapter
     private val TAG = OffersListFragment::class.java.simpleName
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
+
+    @ExperimentalCoroutinesApi
+    val watcher = object : TextWatcher {
+        private var searchFor = ""
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            val searchText = s.toString().trim()
+            if (searchText == searchFor)
+                return
+            searchFor = searchText
+            launch {
+                delay(300)  //debounce timeOut
+                if (searchText != searchFor)
+                    return@launch
+                if (searchText.isNotEmpty())
+                    viewModel.search(searchText)
+                else
+                    viewModel.getOffers()
+            }
+        }
+
+        override fun afterTextChanged(s: Editable?) = Unit
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+    }
 
     override fun getLayoutId(): Int {
         return R.layout.offers_list_fragment
@@ -38,8 +71,12 @@ class OffersListFragment : BaseFragment<OffersListFragmentBinding>(),
             offersAdapter = OffersAdapter(this@OffersListFragment)
             recyclerviewOffers.adapter = offersAdapter
             swipeRefreshLayout.setOnRefreshListener {
-                viewModel.getOffers()
+                if (edittextSearch.text.toString().trim().isEmpty())
+                    viewModel.getOffers()
+                else
+                    viewModel.search(edittextSearch.text.toString())
             }
+            edittextSearch.addTextChangedListener(watcher)
         }
         viewModel.apply {
             offers.observe(viewLifecycleOwner, Observer { offerList ->
@@ -68,6 +105,7 @@ class OffersListFragment : BaseFragment<OffersListFragmentBinding>(),
                 }
             })
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -89,4 +127,6 @@ class OffersListFragment : BaseFragment<OffersListFragmentBinding>(),
             OffersListFragmentDirections.actionOffersListFragmentToOfferDetailsFragment(offer)
         Navigation.findNavController(binding.root).navigate(action)
     }
+
+
 }

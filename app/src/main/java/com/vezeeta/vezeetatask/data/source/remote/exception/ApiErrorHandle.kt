@@ -25,7 +25,7 @@ class ApiErrorHandle(
                 // handle UNAUTHORIZED situation (when token expired)
                 if (throwable.code() == 401) {
                     ErrorModel(
-                        throwable.message(),
+                        resourcesRepository.getUnAuthorizedExceptionMessage(),
                         throwable.code(),
                         ErrorModel.ErrorStatus.UNAUTHORIZED
                     )

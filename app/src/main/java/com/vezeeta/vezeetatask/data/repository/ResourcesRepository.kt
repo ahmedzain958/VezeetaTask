@@ -9,4 +9,7 @@ class ResourcesRepository(private val appResources: AppResources) {
 
     fun getSocketTimeoutExceptionMessage(): String =
         appResources.getString(R.string.socket_timeout_error_message)
+
+    fun getUnAuthorizedExceptionMessage(): String =
+        appResources.getString(R.string.unauthorized_error_message)
 }

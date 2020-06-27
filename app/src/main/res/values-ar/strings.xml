@@ -9,6 +9,7 @@
     <string name="loading">جار التحميل</string>
     <string name="no_internet_connection_error_message">لا يوجد انترنت</string>
     <string name="socket_timeout_error_message">يبدو أن الخادم يستغرق وقتًا طويلاً للرد ، يرجى إعادة المحاولة بعد قليل</string>
+    <string name="unauthorized_error_message">لسوء الحظ, انت غير مسجل من قبل</string>
     <string name="not_valid_email_message">يرجي ادخال ايميل صالح</string>
     <string name="not_valid_password_message">يرجي ادخال كلمة مرور صالحة</string>
     <string name="no_email_message">يرجي ادخال ايميل</string>
