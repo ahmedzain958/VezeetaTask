@@ -32,13 +32,12 @@ class OfferDetailsFragment : BaseFragment<OfferDetailsFragmentBinding>(),
     }
 
     private var currentPos = 0
-    private var itemsSize = 0
+    private var offerImagesSize = 0
 
     @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = getViewDataBinding()
-
         binding.progressbar.show()
         binding.viewModel = viewModel
         arguments?.let {
@@ -65,8 +64,8 @@ class OfferDetailsFragment : BaseFragment<OfferDetailsFragmentBinding>(),
                             this@OfferDetailsFragment
                         )
                         binding.viewpager.adapter = offerImagesPageAdapter
-                        itemsSize = offerDetail.images.size
-                        binding.tvImageIndex.text = "1/$itemsSize"
+                        offerImagesSize = offerDetail.images.size
+                        binding.tvImageIndex.text = "1/$offerImagesSize"
                     })
                 }
             }
@@ -84,7 +83,7 @@ class OfferDetailsFragment : BaseFragment<OfferDetailsFragmentBinding>(),
 
             override fun onPageSelected(position: Int) {
                 currentPos = position
-                binding.tvImageIndex.text = (position + 1).toString() + "/" + itemsSize
+                binding.tvImageIndex.text = (position + 1).toString() + "/" + offerImagesSize
             }
 
         })
@@ -92,11 +91,11 @@ class OfferDetailsFragment : BaseFragment<OfferDetailsFragmentBinding>(),
             if (currentPos > 0) {
                 binding.viewpager.currentItem = currentPos - 1
             } else {
-                binding.viewpager.currentItem = itemsSize - 1
+                binding.viewpager.currentItem = offerImagesSize - 1
             }
         }
         binding.imageviewNext.setOnClickListener {
-            if (currentPos < itemsSize - 1) {
+            if (currentPos < offerImagesSize - 1) {
                 binding.viewpager.currentItem = currentPos + 1
             } else {
                 binding.viewpager.currentItem = 0
@@ -109,7 +108,8 @@ class OfferDetailsFragment : BaseFragment<OfferDetailsFragmentBinding>(),
     var mHandlerTask: Runnable = object : Runnable {
         override fun run() {
             updateSlider()
-            mHandler.postDelayed(this, 5000L)
+            //slides every 7 secs
+            mHandler.postDelayed(this, 7000L)
         }
     }
 

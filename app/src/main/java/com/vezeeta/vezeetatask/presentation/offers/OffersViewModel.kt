@@ -20,6 +20,19 @@ class OffersViewModel constructor(
     private val searchOffersUseCase: SearchOffersUseCase
 ) :
     BaseViewModel() {
+    private val offersListResult = object : UseCaseResponse<List<Offer>> {
+        override fun onSuccess(result: List<Offer>) {
+            _offers.value = result
+            if (result.isNotEmpty())
+                _showProgressbar.value = false
+        }
+
+        override fun onError(errorModel: ErrorModel?) {
+            _messageData.value = errorModel?.message
+            _showProgressbar.value = false
+        }
+    }
+
     val offers: LiveData<List<Offer>>
         get() = _offers
     private val _offers by lazy { MutableLiveData<List<Offer>>() }
@@ -39,18 +52,7 @@ class OffersViewModel constructor(
     @ExperimentalCoroutinesApi
     fun getOffers() {
         _showProgressbar.value = true
-        getOffersUseCase.invoke(null, object : UseCaseResponse<List<Offer>> {
-            override fun onSuccess(result: List<Offer>) {
-                _offers.value = result
-                if (result.isNotEmpty())
-                    _showProgressbar.value = false
-            }
-
-            override fun onError(errorModel: ErrorModel?) {
-                _messageData.value = errorModel?.message
-                _showProgressbar.value = false
-            }
-        })
+        getOffersUseCase.invoke(null, offersListResult)
     }
 
     @ExperimentalCoroutinesApi
@@ -73,17 +75,9 @@ class OffersViewModel constructor(
         _showProgressbar.value = true
         searchOffersUseCase.invoke(
             SearchOffersUseCase.Params(searchText)
-            , object : UseCaseResponse<List<Offer>> {
-                override fun onSuccess(result: List<Offer>) {
-                    _offers.value = result
-                    if (result.isNotEmpty())
-                        _showProgressbar.value = false
-                }
-
-                override fun onError(errorModel: ErrorModel?) {
-                    _messageData.value = errorModel?.message
-                    _showProgressbar.value = false
-                }
-            })
+            , offersListResult
+        )
     }
+
+
 }
