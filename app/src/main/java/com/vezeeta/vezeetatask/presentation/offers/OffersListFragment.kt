@@ -24,17 +24,17 @@ import kotlin.coroutines.CoroutineContext
 
 class OffersListFragment :
     BaseFragment<OffersListFragmentBinding>(),
-    OffersAdapter.OnOfferClickListener {
+    OffersListAdapter.OnOfferClickListener {
     private val viewModel by viewModel<OffersViewModel>()
     private lateinit var binding: OffersListFragmentBinding
-    private lateinit var offersAdapter: OffersAdapter
+    private lateinit var offersListAdapter: OffersListAdapter
     private val TAG = OffersListFragment::class.java.simpleName
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
     @ExperimentalCoroutinesApi
-    val textChangedWatcher = object : TextWatcher {
+    private val textChangedWatcher = object : TextWatcher {
         private var searchFor = ""
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             val searchText = s.toString().trim()
@@ -66,10 +66,16 @@ class OffersListFragment :
         setHasOptionsMenu(true)
         binding = getViewDataBinding()
         viewModel.getOffers()
+        setupUI()
+        setupObservers(view)
+    }
+
+    @ExperimentalCoroutinesApi
+    private fun setupUI() {
         binding.apply {
             progressbar.show()
-            offersAdapter = OffersAdapter(this@OffersListFragment)
-            recyclerviewOffers.adapter = offersAdapter
+            offersListAdapter = OffersListAdapter(this@OffersListFragment)
+            recyclerviewOffers.adapter = offersListAdapter
             swipeRefreshLayout.setOnRefreshListener {
                 if (edittextSearch.text.toString().trim().isEmpty())
                     viewModel.getOffers()
@@ -78,10 +84,13 @@ class OffersListFragment :
             }
             edittextSearch.addTextChangedListener(textChangedWatcher)
         }
+    }
+
+    private fun setupObservers(view: View) {
         viewModel.apply {
             offers.observe(viewLifecycleOwner, Observer { offerList ->
-                offerList.let {
-                    offersAdapter.mOffersList = it
+                offerList?.let {
+                    offersListAdapter.mOffersList = it
                     binding.swipeRefreshLayout.isRefreshing = false
                     Log.d(TAG, "offers count= ${it.size}")
                 }
@@ -105,7 +114,6 @@ class OffersListFragment :
                 }
             })
         }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

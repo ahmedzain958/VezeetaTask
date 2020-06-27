@@ -11,7 +11,7 @@ import com.vezeeta.vezeetatask.databinding.HolderOfferBinding
 import com.vezeeta.vezeetatask.domain.model.Offer
 import kotlin.properties.Delegates
 
-class OffersAdapter(
+class OffersListAdapter(
     var onOfferClickListener: OnOfferClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var mOffersList: List<Offer> by Delegates.observable(emptyList()) { _, _, _ ->

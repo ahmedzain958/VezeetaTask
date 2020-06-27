@@ -27,7 +27,6 @@ class LoginFragment : BaseFragment<LoginFragmentBinding>() {
         return R.layout.login_fragment
     }
 
-
     @ExperimentalCoroutinesApi
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,50 +48,8 @@ class LoginFragment : BaseFragment<LoginFragmentBinding>() {
         binding = getViewDataBinding()
         binding.model = viewModel
         viewModel.getUser()?.observe(viewLifecycleOwner,
-            Observer<LoginUser> { loginUser ->
-                if (TextUtils.isEmpty(loginUser.strEmailAddress)) {
-                    context?.resources?.getString(R.string.no_email_message)?.let {
-                        binding.edittextEmail.error = it
-                        Snackbar.make(
-                            view,
-                            it,
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                    }
-                    binding.edittextEmail.requestFocus()
-                } else if (!loginUser.isEmailValid) {
-                    context?.resources?.getString(R.string.not_valid_email_message)?.let {
-                        binding.edittextEmail.error = it
-                        Snackbar.make(
-                            view,
-                            it,
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                    }
-                    binding.edittextEmail.requestFocus()
-                } else if (TextUtils.isEmpty(loginUser.strPassword)) {
-                    context?.resources?.getString(R.string.no_password_message)?.let {
-                        binding.edittextPassword.error = it
-                        Snackbar.make(
-                            view,
-                            it,
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                    }
-                    binding.edittextPassword.requestFocus()
-                } else if (!loginUser.isPasswordLengthGreaterThan5) {
-                    context?.resources?.getString(R.string.not_valid_password_message)?.let {
-                        binding.edittextPassword.error = it
-                        Snackbar.make(
-                            view,
-                            it,
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                    }
-                    binding.edittextPassword.requestFocus()
-                } else {
-                    viewModel.login()
-                }
+            Observer<LoginUser> { loginUser: LoginUser ->
+                validateUserInput(view, loginUser)
             })
         viewModel.showProgressbar.observe(viewLifecycleOwner, Observer { isVisible ->
             if (isVisible) binding.progressbar.show() else binding.progressbar.hide()
@@ -113,5 +70,57 @@ class LoginFragment : BaseFragment<LoginFragmentBinding>() {
 
     }
 
-
+    @ExperimentalCoroutinesApi
+    private fun validateUserInput(
+        view: View,
+        loginUser: LoginUser
+    ) {
+        if (TextUtils.isEmpty(loginUser.strEmailAddress)) {
+            context?.resources?.getString(R.string.no_email_message)?.let {
+                binding.edittextPassword.error = null
+                binding.edittextEmail.error = it
+                Snackbar.make(
+                    view,
+                    it,
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+            binding.edittextEmail.requestFocus()
+        } else if (!loginUser.isEmailValid) {
+            context?.resources?.getString(R.string.not_valid_email_message)?.let {
+                binding.edittextPassword.error = null
+                binding.edittextEmail.error = it
+                Snackbar.make(
+                    view,
+                    it,
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+            binding.edittextEmail.requestFocus()
+        } else if (TextUtils.isEmpty(loginUser.strPassword)) {
+            context?.resources?.getString(R.string.no_password_message)?.let {
+                binding.edittextEmail.error = null
+                binding.edittextPassword.error = it
+                Snackbar.make(
+                    view,
+                    it,
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+            binding.edittextPassword.requestFocus()
+        } else if (!loginUser.isPasswordLengthGreaterThan5) {
+            context?.resources?.getString(R.string.not_valid_password_message)?.let {
+                binding.edittextEmail.error = null
+                binding.edittextPassword.error = it
+                Snackbar.make(
+                    view,
+                    it,
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+            binding.edittextPassword.requestFocus()
+        } else {
+            viewModel.login()
+        }
+    }
 }
