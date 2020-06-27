@@ -34,7 +34,7 @@ class OffersListFragment :
         get() = Dispatchers.Main
 
     @ExperimentalCoroutinesApi
-    val watcher = object : TextWatcher {
+    val textChangedWatcher = object : TextWatcher {
         private var searchFor = ""
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             val searchText = s.toString().trim()
@@ -76,7 +76,7 @@ class OffersListFragment :
                 else
                     viewModel.search(edittextSearch.text.toString())
             }
-            edittextSearch.addTextChangedListener(watcher)
+            edittextSearch.addTextChangedListener(textChangedWatcher)
         }
         viewModel.apply {
             offers.observe(viewLifecycleOwner, Observer { offerList ->
