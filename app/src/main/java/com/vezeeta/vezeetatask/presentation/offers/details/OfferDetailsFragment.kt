@@ -128,7 +128,7 @@ class OfferDetailsFragment : BaseFragment<OfferDetailsFragmentBinding>(),
     override fun onImageLoadedSuccessfully() {
         binding.apply {
             layoutImageNotFound.visibility = View.GONE
-            imageview_hand?.run{
+            imageview_hand?.run {
                 visibility = View.VISIBLE
                 alpha = 0.0f
                 animate().alpha(1.0f).setListener(object : AnimatorListenerAdapter() {
@@ -138,8 +138,6 @@ class OfferDetailsFragment : BaseFragment<OfferDetailsFragmentBinding>(),
                     }
                 }).duration = 1200
             }
-
-
         }
     }
 
