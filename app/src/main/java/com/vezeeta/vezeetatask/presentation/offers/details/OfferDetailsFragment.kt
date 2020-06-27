@@ -128,17 +128,18 @@ class OfferDetailsFragment : BaseFragment<OfferDetailsFragmentBinding>(),
     override fun onImageLoadedSuccessfully() {
         binding.apply {
             layoutImageNotFound.visibility = View.GONE
-            imageview_hand.visibility = View.VISIBLE
-            imageview_hand.alpha = 0.0f
-            imageview_hand.animate()
-                .alpha(1.0f)
-                .setListener(object : AnimatorListenerAdapter() {
+            imageview_hand?.run{
+                visibility = View.VISIBLE
+                alpha = 0.0f
+                animate().alpha(1.0f).setListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator?) {
                         super.onAnimationEnd(animation)
-                        if (imageview_hand != null)
-                            imageview_hand.visibility = View.GONE
+                        visibility = View.GONE
                     }
                 }).duration = 1200
+            }
+
+
         }
     }
 
