@@ -2,6 +2,7 @@ package com.vezeeta.vezeetatask.presentation.offers
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.PagedList
 import com.vezeeta.vezeetatask.domain.model.ErrorModel
 import com.vezeeta.vezeetatask.domain.model.Offer
 import com.vezeeta.vezeetatask.domain.usecase.authentication.SignOutUseCase
@@ -20,11 +21,13 @@ class OffersViewModel constructor(
     private val searchOffersUseCase: SearchOffersUseCase
 ) :
     BaseViewModel() {
-    private val offersListResult = object : UseCaseResponse<List<Offer>> {
-        override fun onSuccess(result: List<Offer>) {
-            _offers.value = result
-            if (result.isNotEmpty())
-                _showProgressbar.value = false
+    private val offersListResult = object : UseCaseResponse<LiveData<PagedList<Offer>>> {
+        override fun onSuccess(result: LiveData<PagedList<Offer>>) {
+            _offers.value = result.value
+            _offers.value?.let {
+                if (it.isNotEmpty())
+                    _showProgressbar.value = false
+            }
         }
 
         override fun onError(errorModel: ErrorModel?) {
@@ -33,9 +36,13 @@ class OffersViewModel constructor(
         }
     }
 
-    val offers: LiveData<List<Offer>>
+    val offers: LiveData<PagedList<Offer>>
         get() = _offers
-    private val _offers by lazy { MutableLiveData<List<Offer>>() }
+    private val _offers by lazy { MutableLiveData<PagedList<Offer>>() }
+
+    val searchedOffers: LiveData<List<Offer>>
+        get() = _searchedOffers
+    private val _searchedOffers by lazy { MutableLiveData<List<Offer>>() }
 
     val showProgressbar: LiveData<Boolean>
         get() = _showProgressbar
@@ -75,7 +82,19 @@ class OffersViewModel constructor(
         _showProgressbar.value = true
         searchOffersUseCase.invoke(
             SearchOffersUseCase.Params(searchText)
-            , offersListResult
+            , object : UseCaseResponse<List<Offer>> {
+                override fun onSuccess(result: List<Offer>) {
+                    _searchedOffers.value = result
+                    _searchedOffers.value?.let {
+                        if (it.isNotEmpty())
+                            _showProgressbar.value = false
+                    }
+                }
+                override fun onError(errorModel: ErrorModel?) {
+                    _messageData.value = errorModel?.message
+                    _showProgressbar.value = false
+                }
+            }
         )
     }
 

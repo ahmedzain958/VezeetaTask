@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.vezeeta.vezeetatask.R
@@ -13,32 +14,18 @@ import kotlin.properties.Delegates
 
 class OffersListAdapter(
     var onOfferClickListener: OnOfferClickListener
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var mOffersList: List<Offer> by Delegates.observable(emptyList()) { _, _, _ ->
-        notifyDataSetChanged()
-    }
+) :
+    PagedListAdapter<Offer, OffersListAdapter.OfferViewHolder>(DiffUtilCallBack()) {
 
     interface OnOfferClickListener {
         fun onOfferClicked(offer: Offer)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OfferViewHolder {
         val holderOfferBinding = DataBindingUtil.inflate<ViewDataBinding>(
             LayoutInflater.from(parent.context), R.layout.holder_offer, parent, false
         )
         return OfferViewHolder(holderOfferBinding)
-    }
-
-    override fun getItemCount(): Int {
-        return if (mOffersList.isNullOrEmpty()) 0 else mOffersList.size
-    }
-
-    private fun getItem(position: Int): Offer {
-        return mOffersList[position]
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as OfferViewHolder).onBind(getItem(position))
     }
 
     inner class OfferViewHolder(private val viewDataBinding: ViewDataBinding) :
@@ -53,6 +40,10 @@ class OffersListAdapter(
     }
 
 
+    override fun onBindViewHolder(holder: OfferViewHolder, position: Int) {
+        getItem(position)?.let { holder.onBind(it) }
+    }
+
     class DiffUtilCallBack : DiffUtil.ItemCallback<Offer>() {
         override fun areItemsTheSame(oldItem: Offer, newItem: Offer): Boolean {
             return oldItem.offerKey == newItem.offerKey
@@ -65,5 +56,4 @@ class OffersListAdapter(
         }
 
     }
-
 }

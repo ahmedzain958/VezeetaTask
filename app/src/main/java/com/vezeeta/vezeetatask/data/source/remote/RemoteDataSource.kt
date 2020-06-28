@@ -2,6 +2,7 @@ package com.vezeeta.vezeetatask.data.source.remote
 
 import com.vezeeta.vezeetatask.domain.model.Offer
 import com.vezeeta.vezeetatask.domain.model.OfferDetail
+import com.vezeeta.vezeetatask.domain.model.Response
 import com.vezeeta.vezeetatask.domain.model.User
 
 /**
@@ -9,7 +10,7 @@ import com.vezeeta.vezeetatask.domain.model.User
  */
 interface RemoteDataSource {
     suspend fun login(email: String, password: String): User
-    suspend fun getOffers(page: Int): List<Offer>
+    suspend fun getOffers(page: Int): retrofit2.Response<Response>
     suspend fun getOfferDetails(offerKey: String): OfferDetail
     suspend fun searchOffers(searchText: String): List<Offer>
 }

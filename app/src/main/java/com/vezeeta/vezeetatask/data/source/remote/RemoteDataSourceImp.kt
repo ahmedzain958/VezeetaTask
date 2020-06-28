@@ -2,6 +2,7 @@ package com.vezeeta.vezeetatask.data.source.remote
 
 import com.vezeeta.vezeetatask.domain.model.Offer
 import com.vezeeta.vezeetatask.domain.model.OfferDetail
+import com.vezeeta.vezeetatask.domain.model.Response
 import com.vezeeta.vezeetatask.domain.model.User
 
 /**
@@ -17,8 +18,8 @@ class RemoteDataSourceImp(
         return vezeetaApi.login(email, password)
     }
 
-    override suspend fun getOffers(page: Int): List<Offer> {
-        return vezeetaApi.getOffers(page).offersList
+    override suspend fun getOffers(page: Int): retrofit2.Response<Response> {
+        return vezeetaApi.getOffers(page)
     }
 
     override suspend fun getOfferDetails(offerKey: String): OfferDetail {
@@ -28,4 +29,5 @@ class RemoteDataSourceImp(
     override suspend fun searchOffers(searchText: String): List<Offer> {
         return vezeetaApi.searchOffers(searchText).offersList
     }
+
 }

@@ -1,5 +1,6 @@
 package com.vezeeta.vezeetatask.domain.usecase.offers
 
+import androidx.paging.PagedList
 import com.vezeeta.vezeetatask.data.source.remote.exception.ApiErrorHandle
 import com.vezeeta.vezeetatask.domain.model.Offer
 import com.vezeeta.vezeetatask.domain.repository.OffersRepository

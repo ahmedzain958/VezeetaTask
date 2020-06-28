@@ -90,11 +90,18 @@ class OffersListFragment :
         viewModel.apply {
             offers.observe(viewLifecycleOwner, Observer { offerList ->
                 offerList?.let {
-                    offersListAdapter.mOffersList = it
+                    offersListAdapter.submitList(it)
                     binding.swipeRefreshLayout.isRefreshing = false
                     Log.d(TAG, "offers count= ${it.size}")
                 }
             })
+             /*searchedOffers.observe(viewLifecycleOwner, Observer { offerList ->
+                offerList?.let {
+                    offersListAdapter.submitList(it)
+                    binding.swipeRefreshLayout.isRefreshing = false
+                    Log.d(TAG, "offers count= ${it.size}")
+                }
+            })*/
             showProgressbar.observe(viewLifecycleOwner, Observer { isVisible ->
                 if (isVisible) binding.progressbar.show() else binding.progressbar.hide()
             })
